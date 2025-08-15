@@ -1,0 +1,2 @@
+1. Using Gmail SMTP with App Password (Recommended)
+2. Using Google Gmail API (More secure, but complex)
