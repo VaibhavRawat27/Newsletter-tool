@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block quill_head %}
+  <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Compose</h1>
+<form method="post" action="{{ url_for('compose') }}">
+  <div class="grid md:grid-cols-3 gap-4">
+    <div class="md:col-span-2 space-y-4">
+      <input name="subject" class="input input-bordered w-full" placeholder="Subject" value="{{ subject or '' }}" required>
+      <input name="from_name" class="input input-bordered w-full" placeholder="From name (optional)" value="{{ from_name or '' }}">
+      <div class="card bg-base-100 shadow">
+        <div class="card-body">
+          <label class="label"><span class="label-text">Email Body (HTML)</span></label>
+          <div id="editor" class="min-h-64"></div>
+          <textarea name="html_body" id="html_body" hidden></textarea>
+        </div>
+      </div>
+      <div class="flex gap-2">
+        <button class="btn btn-primary" onclick="saveHtml()">Save Draft</button>
+        <button class="btn btn-secondary" onclick="saveHtml()" formaction="{{ url_for('preview_current') }}">Preview</button>
+      </div>
+    </div>
+
+    <div class="space-y-4">
+      <div class="card bg-base-100 shadow">
+        <div class="card-body">
+          <div class="flex items-center justify-between">
+            <h2 class="card-title">Recipients</h2>
+            <label class="label cursor-pointer">
+              <span class="label-text">Select All</span> 
+              <input id="checkAll" type="checkbox" class="toggle ml-2" onclick="toggleAll('.rcpt', 'checkAll')"/>
+            </label>
+          </div>
+          <div class="max-h-80 overflow-y-auto space-y-2">
+            {% for c in contacts %}
+              <label class="flex items-center gap-2">
+                <input type="checkbox" class="checkbox rcpt" name="recipient_ids" value="{{ c.id }}">
+                <span>{{ c.name }} &lt;{{ c.email }}&gt; {% if c.tags %}<span class="badge badge-outline">{{ c.tags }}</span>{% endif %}</span>
+              </label>
+            {% else %}
+              <p class="text-sm opacity-70">No contacts yet. Add some on the Contacts page.</p>
+            {% endfor %}
+          </div>
+          <div class="mt-2">
+            <label class="label"><span class="label-text">Or add a one-off email</span></label>
+            <input name="one_off_email" type="email" class="input input-bordered w-full" placeholder="name@example.com">
+          </div>
+          <div class="mt-4">
+            <button class="btn btn-accent w-full" onclick="saveHtml()" formaction="{{ url_for('send_now') }}">Send Now</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <input type="hidden" id="initial_html" value="{{ html_body|tojson }}">
+</form>
+
+<script>
+  const quill = new Quill('#editor', { theme: 'snow' });
+  // Load initial HTML (for duplicate or edit)
+  const initial = JSON.parse(document.getElementById('initial_html').value || 'null');
+  if (initial){
+    const delta = quill.clipboard.convert(initial);
+    quill.setContents(delta, 'silent');
+  }
+  function saveHtml(){
+    const html = quill.root.innerHTML;
+    document.getElementById('html_body').value = html;
+  }
+</script>
+{% endblock %}

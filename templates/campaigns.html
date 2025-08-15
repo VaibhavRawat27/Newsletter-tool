@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="flex items-center justify-between mb-4">
+  <h1 class="text-2xl font-bold">Campaigns</h1>
+  <a class="btn btn-primary" href="{{ url_for('compose') }}">New Campaign</a>
+</div>
+
+<div class="card bg-base-100 shadow">
+  <div class="card-body overflow-x-auto">
+    <table class="table">
+      <thead>
+        <tr><th>#</th><th>Subject</th><th>Created</th><th>Recipients</th><th>Status</th><th></th></tr>
+      </thead>
+      <tbody>
+        {% for camp in campaigns %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ camp.subject }}</td>
+          <td>{{ camp.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+          <td>{{ camp.recipients|length }}</td>
+          <td>{{ camp.status }}</td>
+          <td class="flex gap-2">
+            <a class="btn btn-sm" href="{{ url_for('preview_campaign', campaign_id=camp.id) }}">Preview</a>
+            <a class="btn btn-sm" href="{{ url_for('compose', duplicate_id=camp.id) }}">Duplicate</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

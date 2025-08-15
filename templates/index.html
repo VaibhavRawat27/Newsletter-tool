@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="grid md:grid-cols-3 gap-4">
+  <div class="card bg-base-100 shadow">
+    <div class="card-body">
+      <h2 class="card-title">Contacts</h2>
+      <p>Manage your recipients with names, emails, tags, and notes.</p>
+      <div class="card-actions justify-end">
+        <a class="btn btn-primary" href="{{ url_for('contacts') }}">Open</a>
+      </div>
+    </div>
+  </div>
+  <div class="card bg-base-100 shadow">
+    <div class="card-body">
+      <h2 class="card-title">Campaigns</h2>
+      <p>See previously composed campaigns and re-send or duplicate.</p>
+      <div class="card-actions justify-end">
+        <a class="btn btn-primary" href="{{ url_for('campaigns') }}">Open</a>
+      </div>
+    </div>
+  </div>
+  <div class="card bg-base-100 shadow">
+    <div class="card-body">
+      <h2 class="card-title">Compose</h2>
+      <p>Create a new email with a rich HTML editor and choose recipients.</p>
+      <div class="card-actions justify-end">
+        <a class="btn btn-primary" href="{{ url_for('compose') }}">Open</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

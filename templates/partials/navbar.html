@@ -1,0 +1,16 @@
+<div class="navbar bg-base-100 shadow">
+  <div class="flex-1">
+    <a href="{{ url_for('index') }}" class="btn btn-ghost text-xl">📨 {{ app_name }}</a>
+    <a href="{{ url_for('contacts') }}" class="btn btn-ghost">Contacts</a>
+    <a href="{{ url_for('campaigns') }}" class="btn btn-ghost">Campaigns</a>
+    <a href="{{ url_for('compose') }}" class="btn btn-ghost">Compose</a>
+  </div>
+  <div class="flex-none">
+    {% if gmail_connected %}
+      <div class="badge badge-success badge-lg">Gmail Connected</div>
+      <a href="{{ url_for('disconnect_gmail') }}" class="btn btn-outline btn-sm ml-2">Disconnect</a>
+    {% else %}
+      <a class="btn btn-primary btn-sm" href="{{ url_for('connect_gmail') }}">Connect Gmail</a>
+    {% endif %}
+  </div>
+</div>

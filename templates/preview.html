@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Preview</h1>
+<div class="grid md:grid-cols-3 gap-4">
+  <div class="md:col-span-2">
+    <div class="card bg-base-100 shadow">
+      <div class="card-body">
+        <h2 class="card-title">Subject: {{ subject }}</h2>
+        <article class="prose max-w-none">
+          {{ html_body|safe }}
+        </article>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="card bg-base-100 shadow">
+      <div class="card-body">
+        <h2 class="card-title">Recipients</h2>
+        <ul class="list-disc pl-5">
+          {% for r in recipients %}
+            <li>{{ r }}</li>
+          {% else %}
+            <li>No recipients selected.</li>
+          {% endfor %}
+        </ul>
+        <div class="mt-4">
+          <a href="{{ url_for('compose') }}" class="btn">Back</a>
+          <form class="inline" method="post" action="{{ url_for('send_now') }}">
+            <input type="hidden" name="subject" value="{{ subject }}">
+            <input type="hidden" name="html_body" value="{{ html_body|e }}">
+            {% for id in recipient_ids %}
+              <input type="hidden" name="recipient_ids" value="{{ id }}">
+            {% endfor %}
+            {% if one_off_email %}
+              <input type="hidden" name="one_off_email" value="{{ one_off_email }}">
+            {% endif %}
+            <button class="btn btn-primary">Send Now</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

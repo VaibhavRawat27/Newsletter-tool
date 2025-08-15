@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="flex items-center justify-between mb-4">
+  <h1 class="text-2xl font-bold">Contacts</h1>
+  <form class="flex gap-2" method="post" action="{{ url_for('add_contact') }}">
+    <input name="name" class="input input-bordered" placeholder="Name" required>
+    <input name="email" type="email" class="input input-bordered" placeholder="Email" required>
+    <input name="tags" class="input input-bordered" placeholder="Tags (comma)">
+    <input name="notes" class="input input-bordered" placeholder="Notes">
+    <button class="btn btn-primary">Add</button>
+  </form>
+</div>
+
+<div class="card bg-base-100 shadow">
+  <div class="card-body overflow-x-auto">
+    <table class="table table-zebra">
+      <thead>
+        <tr>
+          <th>#</th><th>Name</th><th>Email</th><th>Tags</th><th>Notes</th><th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for c in contacts %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>{{ c.name }}</td>
+          <td>{{ c.email }}</td>
+          <td>{{ c.tags }}</td>
+          <td>{{ c.notes }}</td>
+          <td>
+            <form method="post" action="{{ url_for('delete_contact', contact_id=c.id) }}" onsubmit="return confirm('Delete this contact?')">
+              <button class="btn btn-error btn-sm">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
