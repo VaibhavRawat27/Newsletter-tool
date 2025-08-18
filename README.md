@@ -63,3 +63,4 @@ token.json        # (auto-created after OAuth)
 
 ---
 **Security Tip:** This demo has no multi-user login. If you deploy it publicly, add auth (e.g., Flask-Login) or IP restrict it.
+Also this is under development some tasks will throw erros and need urgent attention.
